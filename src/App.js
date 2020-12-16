@@ -1,24 +1,40 @@
-import logo from './logo.svg';
+import React from 'react'
 import './App.css';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Container, Divider } from '@material-ui/core'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import UserPage from './components/Users/UserPage'
+import RepoPage from './components/Repos/RepoPage'
+import SearchInput from './components/SearchBar/SearchInput'
+import Error from './components/Utils/Error'
 
 function App() {
+  const theme = createMuiTheme({
+    typography: {
+      fontFamily: 'Poppins, Arial',
+    }
+  });
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+    <Container  >
+          <Router>
+        <Switch>
+          <Route path='/' exact={true}>
+                <SearchInput  />
+                <Divider />
+                <UserPage />
+          </Route>
+          <Route path='/repodash/:repoid'>
+               <RepoPage/>
+          </Route>
+          <Route path='*'>
+              <Error message={'Error 404'} submessage={'Not Found'} goback={true}/>
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
+    </ThemeProvider>
   );
 }
 
